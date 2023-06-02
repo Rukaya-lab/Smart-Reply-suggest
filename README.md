@@ -15,6 +15,8 @@
   - Reduced stress: People could experience less stress from feeling overwhelmed by their communication workload.
 
 ### The Data
+
+[Data can be found here](https://www.kaggle.com/datasets/arnavsharmaas/chatbot-dataset-topical-chat)
 This is a Topical Chat dataset from Amazon! It consists of over 8000 conversations and over 184000 messages!
 
 Within each message, there is: A conversation id, which is basically which conversation the message takes place in. Each message is either the start of a conversation or a reply from the previous message. There is also a sentiment, which represents the emotion that the person who sent the message is feeling. There are 8 sentiments: Angry, Curious to Dive Deeper, Disguised, Fearful, Happy, Sad, and Surprised.
@@ -43,11 +45,15 @@ If all of these criteria are met, the function then appends the input and target
   - Once all of the sequences have been added to the AnnoyIndex object, the code builds the index by creating 100 trees. 
   - A similarity matrix is built for both texts bags that shows the similarity between each pair of texts.
 
+#### Clustering
+
 4. Clustering using the similarity matrix for both input and target texts.
   - Tested both the hdbscan algorithm and dbscan algorithm using different epsilon value while finding the optimal value for the epsilon parameter.
 
 5. Generate padded sequences from a list of input sequences 
   The purpose of this is to prepare the input sequences for training a machine learning model. The padding ensures that all input sequences are the same length, which can improve the performance of the model.
+
+#### Modeling
 
 6. Modeling with LSTM
   The model is a sequential model with the following layers:
@@ -62,14 +68,28 @@ If all of these criteria are met, the function then appends the input and target
     - Optimizer: Adam
     - Metrics: accuracy
 
+#### Result
   The model achieved a loss of 0.1177 and  accuracy of 97%.
 
 Example usage
-   Input - good bye
+   Input - bye
 
     Response 1 -> bye  
-    Response 2 -> hello yes i love reading do you enjoy it 
-    Response 3 -> you too 
-    Response 4 -> have a good one  
-    Response 5 -> that  
-    Response 6 -> same to you  
+    Response 2 -> have a good one  
+    Response 3 -> same to you  
+    Response 4 -> have a good weekend  
+    Response 5 -> have a good evening  
+    Response 6 -> good night
+    Response 7 -> see ya 
+    Response 8 -> take care 
+
+
+#### Potential Stonewall
+  - The similarity index building is quite large and takes time to create hence you need GPU access.
+  - Since the texts have been stripped of punctuations in the preprocessing, one needs to find a way to add them back.
+
+#### Next Steps
+  - A dataset can be built speciafically for this project that will be robust enough to capture conversation complexities. The current dataset contains some converstaions that are topic specific.
+  - I tried to add back the punctation using the rpunct library i found on Hugging face but the libraray hasn't been updated for a while and hence didn't captuer all punctions. So a work could be done focused on that.
+  - The clustering method can be improved.
+  - Deploying the model.
